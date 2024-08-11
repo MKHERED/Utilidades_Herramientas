@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGESES: Carga de excel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+<style>
+    div.dz-default.dz-message {
+        color: red;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 bg-success mt-2 p-2 rounded">
+                <h4 class="text-light mb-0">Servicio: Procesador de excel</h4>
+                <p class="m-0 text-light "><b>Fines: </b>Se usara para cargar multiples visitas a una estación en particular </p>
+
+            </div>
+            <div class="col-12 bg-light pt-2 pb-1">
+                <p class="m-0"><b>Información: </b>Solo se admite un documento tipo excel como este ejemplo archivo<b>.xlsx</b></p>
+            </div>
+            <form action="update.php" class="dropzone bg-light border border-1 border-success rounded" id="myDrop" style="height: 75vh;" method="post">
+                <div class="align-self-start justify-self-start" style="width: 20vw;">
+                    <select name="estacion" id="" class="form-select">
+                        <option value="none">Elija una estación</option>
+                    </select>
+                    <input type="text" name="autor" class="d-none" value="{{$autor}}">
+                </div>
+
+                                    
+                
+            </form>
+            <div class="col-12 d-flex justify-content-center m-1">
+                <button class="btn btn-warning btn-sm" style="width: 20vw;" id="boton" onclick="preguntar(Dropzone.forElement('#myDrop'))">Guardar</button>
+            </div>
+
+        </div>
+    </div>
+    
+</body>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+
+    Dropzone.options.myDrop = { // camelized version of the `id`
+        paramName: "file", // The name that will be used to transfer the file
+        maxFilesize: 5, // MB
+        maxFiles: 1,
+        addRemoveLinks: true,
+        acceptedFiles: ".xlsx",
+        autoProcessQueue: false, //para evitar que se envien directamente al servidor
+        accept: function(file, done) {
+            console.log("uploaded");
+            done();
+        }
+    }
+
+
+
+    function preguntar(myDropzone) {
+        console.log('pregunta')
+        pregunta = confirm("¿Esta usted seguro que desea enviar este archivo? \n Una vez subido el archivo los cambios quedesee hacer deberan ser manuales")
+        //cambiar el valor del texto y el color y asi es mejor
+        if (pregunta) {
+            myDropzone.processQueue().then(
+                function(){
+                    const formulario = document.getElementById('myDrop').closest('form');
+                    formulario.submit();
+                }
+            )
+            /*
+            if (formulario) {
+                //document.getElementById('myDrop').submit();      
+                subido;
+                alert('Su archivo {name} fue subido con exito')
+
+                formulario.submit();
+            } else {
+                console.error('No se encontro el formulario');
+            }*/
+        } else {
+            alert('Operacion cancelada y el archivo no se subio');
+        }
+
+    }
+
+
+</script>
+
+    <!--script src="config-drop.js"></script-->
+
